@@ -1,0 +1,139 @@
+<audio id="bg-music" autoplay loop>
+  <source src="mylove.mp3" type="audio/mpeg">
+</audio>
+<!DOCTYPE html> 
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>ถึงอ้วนของเค้า 💖</title>
+  <style>
+    body {
+      background: linear-gradient(180deg, #ffe6f2, #fff0f5);
+      font-family: 'Prompt', sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      color: #444;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #ff66a3;
+      font-size: 42px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    p {
+      font-size: 20px;
+      margin: 20px auto;
+      width: 80%;
+      line-height: 1.8;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    button {
+      background-color: #ff99cc;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      color: white;
+      font-size: 18px;
+      transition: 0.3s;
+      animation: fadeIn 4s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #ff66b3;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .heart {
+      font-size: 80px;
+      color: #ff6699;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* หัวใจลอยขึ้น */
+    .floating-heart {
+      position: absolute;
+      color: #ff80aa;
+      font-size: 24px;
+      animation: floatUp 5s linear forwards;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_746c6429e0.mp3?filename=love-theme-soft-piano-14237.mp3" type="audio/mp3">
+  </audio>
+
+  <div class="heart">💗</div>
+  <div id="content">
+    <h1>ถึงอ้วน...คนพิเศษของเค้า 💕</h1>
+    <p>
+      อ้วนน่ารักที่สุดเลยรู้มั้ย~ 💞<br>
+      แค่ได้คุยกับอ้วน เค้าก็ยิ้มทั้งวันแล้ว ☀️<br>
+      ขอบคุณที่อยู่ข้าง ๆ เค้านะ อ้วนของเค้า 🌸<br>
+      รักอ้วนนะ ไม่ใช่นิดเดียว...แต่เยอะมากกก 💗
+    </p>
+    <button onclick="showLove()">กดรับความน่ารัก 💌</button>
+  </div>
+
+  <script>
+    // หัวใจลอยขึ้นเรื่อย ๆ
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("floating-heart");
+      heart.textContent = "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+
+    // เปลี่ยนข้อความหลังจากกดปุ่ม
+    function showLove() {
+      const content = document.getElementById("content");
+      content.innerHTML = `
+        <h1>💞 เค้ารักอ้วนมากเลย 💞</h1>
+        <p style="font-size:22px;">
+          วันที่เค้ากับอ้วนเริ่มอยู่ด้วยกัน — <strong>24/01/2568</strong> 💗<br><br>
+          ตั้งแต่วันนั้น เค้าก็ยิ้มได้เพราะมีอ้วนอยู่ข้าง ๆ ตลอดเลย 😊<br>
+          เค้าสัญญานะว่าจะดูแลอ้วนไปเรื่อย ๆ ไม่หนีไปไหนแน่นอน 💕<br>
+          รักอ้วนนะ...สุดหัวใจของเค้าเลย 💫💖
+        </p>
+      `;
+
+      // สร้างหัวใจพุ่งตอนกด
+      for (let i = 0; i < 30; i++) {
+        setTimeout(createHeart, i * 100);
+      }
+    }
+  </script>
+</body>
+</html>
