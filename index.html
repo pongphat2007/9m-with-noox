@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ถึงอ้วนของเค้า 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
-
   <style>
     * {
       box-sizing: border-box;
@@ -26,10 +25,14 @@
       transition: background-image 1.2s ease-in-out, opacity 1s ease-in-out;
     }
 
+    h1, p, button {
+      -webkit-text-stroke: 1.2px black;
+      text-shadow: 0 0 3px #000;
+    }
+
     h1 {
       font-size: 6vw;
       animation: fadeIn 2s ease-in-out;
-      text-shadow: 0 0 4px #000, 0 0 8px #000;
     }
 
     p {
@@ -38,7 +41,6 @@
       width: 90%;
       line-height: 1.8;
       animation: fadeIn 3s ease-in-out;
-      text-shadow: 0 0 4px #000, 0 0 8px #000;
     }
 
     button {
@@ -51,6 +53,7 @@
       font-size: 5vw;
       transition: 0.3s;
       animation: fadeIn 4s ease-in-out;
+      -webkit-text-stroke: 0.5px black;
       text-shadow: 0 0 3px #000;
     }
 
@@ -74,7 +77,7 @@
       z-index: 1000;
       animation: fadeIn 1.5s ease-in-out;
       white-space: nowrap;
-      text-shadow: 0 0 3px #000;
+      -webkit-text-stroke: 0.5px black;
     }
 
     .music-btn:hover {
@@ -91,7 +94,7 @@
       font-size: 15vw;
       color: #ff6699;
       animation: heartbeat 1.5s infinite;
-      text-shadow: 0 0 8px #000;
+      text-shadow: 0 0 10px #000;
     }
 
     @keyframes heartbeat {
@@ -139,7 +142,7 @@
 
   <div id="heart-container" class="heart">💗</div>
 
-  <div id="content" class="fade">
+  <div id="content">
     <h1>หมูอ้วนของเค้า~ 💕</h1>
     <p>
       เขียนโค้ดมาจีบอ้วนนน 😚<br>
@@ -195,14 +198,20 @@
       if (page < pages.length) {
         const p = pages[page];
         document.body.style.backgroundImage = p.bg;
-        content.innerHTML = `
-          <h1>${p.title}</h1>
-          <p>${p.text}</p>
-          ${p.isGallery
-            ? `<button onclick="showGallery()">ดูภาพความทรงจำ 📷</button>`
-            : `<button onclick="nextPage()">ไปต่อ 💌</button>`
-          }
-        `;
+        content.style.opacity = 0;
+
+        setTimeout(() => {
+          content.innerHTML = `
+            <h1>${p.title}</h1>
+            <p>${p.text}</p>
+            ${p.isGallery
+              ? `<button onclick="showGallery()">ดูภาพความทรงจำ 📷</button>`
+              : `<button onclick="nextPage()">ไปต่อ 💌</button>`
+            }
+          `;
+          content.style.opacity = 1;
+        }, 400);
+
         page++;
       }
     }
