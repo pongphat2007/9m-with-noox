@@ -1,229 +1,278 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ถึงอ้วนของเค้า 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      transition: all 0.3s ease-in-out;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Prompt', sans-serif;
-      color: #fff;
-      overflow: hidden;
-      height: 100vh;
-      text-align: center;
       background: #ffe6f2;
       background-size: cover;
       background-position: center;
-      transition: background-image 1.5s ease-in-out;
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      transition: background-image 1.2s ease-in-out;
     }
 
+    /* page layers */
+    #page-container { position: relative; width:100%; height:100vh; overflow:hidden; }
     .page {
       position: absolute;
       inset: 0;
-      opacity: 0;
-      transition: opacity 1.2s ease-in-out;
       padding: 12vh 5vw 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.9s ease-in-out;
     }
-
     .page.active {
       opacity: 1;
+      pointer-events: auto;
       z-index: 2;
     }
 
     h1 {
       font-size: 6vw;
+      margin: 0.2em 0;
       text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
-      animation: fadeIn 1.5s ease-in-out;
+      animation: fadeIn 1s ease-in-out;
     }
-
     p {
       font-size: 4.5vw;
-      margin: 20px auto;
+      margin: 18px auto;
       width: 90%;
       line-height: 1.8;
-      animation: fadeIn 2s ease-in-out;
       text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
+      animation: fadeIn 1.2s ease-in-out;
     }
-
     button {
-      background-color: rgba(255, 153, 204, 0.9);
+      background-color: rgba(255,153,204,0.95);
       border: none;
       padding: 3vw 7vw;
       border-radius: 30px;
       cursor: pointer;
-      color: white;
+      color: #fff;
       font-size: 5vw;
-      transition: transform 0.3s;
-      animation: fadeIn 3s ease-in-out;
+      transition: transform .2s, background .2s;
     }
-
-    button:hover {
-      background-color: rgba(255, 102, 179, 0.9);
-      transform: scale(1.05);
-    }
+    button:hover { transform: scale(1.04); background-color: rgba(255,102,179,0.95); }
 
     .music-btn {
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff99cc;
-      border: none;
-      border-radius: 25px;
-      padding: 12px 25px;
-      font-size: 18px;
-      color: white;
-      box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
-      z-index: 1000;
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+      background:#ff99cc; border:none; padding:10px 22px; border-radius:20px;
+      color:#fff; z-index:1001; box-shadow:0 6px 18px rgba(255,182,193,0.5);
     }
 
-    .music-btn:hover {
-      background: #ff66b2;
-      transform: translateX(-50%) scale(1.05);
-    }
+    .heart { font-size: 15vw; color: #ff6699; animation: heartbeat 1.4s infinite; margin-bottom: 10px; }
+    @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
 
-    .heart {
-      font-size: 15vw;
-      color: #ff6699;
-      animation: heartbeat 1.5s infinite;
-    }
+    /* floating hearts */
+    .floating-heart { position: absolute; color: #ffb6c1; font-size:6vw; animation: floatUp 6s linear forwards; opacity:0; z-index:0; }
+    @keyframes floatUp { 0%{transform:translateY(0) scale(0.8); opacity:1} 100%{transform:translateY(-120vh) scale(1.5); opacity:0} }
 
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+    /* gallery styles (จะใช้เมื่อเข้า gallery) */
+    .gallery-wrap { padding: 40px 20px 90px; display:flex; flex-direction:column; align-items:center; }
+    .gallery-grid {
+      display:flex; flex-wrap:wrap; gap:22px; justify-content:center; max-width:1100px; width:100%;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .gallery-item {
+      width: 220px; height: 260px; background:#fff; border-radius:12px; overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.25); transform: rotate(var(--angle,0deg));
+      transition: transform .25s ease, box-shadow .25s ease;
+      position:relative;
     }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .gallery-item:hover { transform: rotate(0deg) scale(1.05); z-index:5; box-shadow:0 18px 40px rgba(0,0,0,0.35); }
 
-    /* Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 30px 5vw 80px;
-      animation: fadeIn 2s ease-in-out;
+    /* hanging rope + window shadow for atmosphere */
+    .rope-line { width:90%; max-width:1100px; margin: 6px auto 18px; height:24px; border-top:3px solid rgba(120,70,30,0.45); position:relative; }
+    .rope-line::after { content:""; position:absolute; left:50%; top:-14px; transform:translateX(-50%); width:10px; height:10px; background:#f4b7cf; border-radius:50%; box-shadow:0 1px 0 rgba(0,0,0,0.15); }
+
+    .window-shadow {
+      pointer-events:none;
+      position:fixed; inset:0; z-index:0;
+      background: repeating-linear-gradient(
+        40deg,
+        rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 18px,
+        transparent 18px, transparent 60px
+      );
+      mix-blend-mode: multiply;
+      animation: lightMove 9s infinite alternate ease-in-out;
+      opacity:0.25;
     }
+    @keyframes lightMove { from{transform:translateX(-6px)} to{transform:translateX(6px)} }
 
-    .gallery img {
-      width: 100%;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(255, 182, 193, 0.6);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .gallery img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 25px rgba(255, 105, 180, 0.8);
-    }
-
-    @media (min-width: 768px) {
-      h1 { font-size: 46px; }
-      p { font-size: 26px; }
-      button { font-size: 22px; padding: 15px 35px; }
-      .music-btn { font-size: 20px; padding: 10px 25px; }
+    @media (min-width:768px){
+      h1{font-size:46px} p{font-size:22px} button{font-size:18px;padding:12px 28px}
     }
   </style>
 </head>
 <body>
-  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
-  <audio id="bgm" loop>
-    <source src="mylove.mp3" type="audio/mp3">
-  </audio>
+  <button id="musicBtn" class="music-btn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
+  <audio id="bgm" loop><source src="mylove.mp3" type="audio/mp3"></audio>
 
   <div id="page-container"></div>
+  <div class="window-shadow" aria-hidden="true"></div>
 
   <script>
-    const music = document.getElementById("bgm");
-    const musicBtn = document.getElementById("musicBtn");
-    const container = document.getElementById("page-container");
+    document.addEventListener('DOMContentLoaded', ()=> {
+      const bgm = document.getElementById('bgm');
+      const musicBtn = document.getElementById('musicBtn');
+      const container = document.getElementById('page-container');
 
-    function playMusic() {
-      music.play();
-      musicBtn.style.display = "none";
-    }
+      function playMusic(){ bgm.play().catch(()=>{}); musicBtn.style.display='none'; }
+      window.playMusic = playMusic; // ให้เรียกจากปุ่มที่ markup ใช้
 
-    const pages = [
-      {
-        bg: "url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80')",
-        html: `
-          <div class="page active">
-            <div class="heart">💗</div>
-            <h1>หมูอ้วนของเค้า~ 💕</h1>
-            <p>
-              เขียนโค้ดมาจีบอ้วนนน 😚<br>
-              ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
-              ไปต่อกันเล๊ยยยย~ 🌷
-            </p>
-            <button onclick="nextPage()">ไปต่อ 💌</button>
-          </div>
-        `
-      },
-      {
-        bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')",
-        html: `
-          <div class="page">
-            <h1>ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️</h1>
-            <p>
-              ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
-              แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
-              เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖
-            </p>
-            <button onclick="nextPage()">ต่อไป 🌸</button>
-          </div>
-        `
-      },
-      {
-        bg: "url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80')",
-        html: `
-          <div class="page">
-            <h1>รวมความทรงจำของเรา 💗</h1>
-            <p>เค้าเก็บรูปพวกนี้ไว้เพราะทุกภาพมี "อ้วน" อยู่ในนั้นเสมอ 🌷</p>
-            <div class="gallery">
-              <img src="photo1.jpg">
-              <img src="photo2.jpg">
-              <img src="photo3.jpg">
-              <img src="photo4.jpg">
-              <img src="photo5.jpg">
-              <img src="photo6.jpg">
-              <img src="photo7.jpg">
-              <img src="photo8.jpg">
-              <img src="photo9.jpg">
-              <img src="photo10.jpg">
+      // เพจทั้งหมด (รักษาข้อความเดิมครบถ้วน)
+      const pages = [
+        {
+          bg: "url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80')",
+          content: `
+            <div class="page active">
+              <div class="heart">💗</div>
+              <h1>หมูอ้วนของเค้า~ 💕</h1>
+              <p>
+                เขียนโค้ดมาจีบอ้วนนน 😚<br>
+                ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
+                ไปต่อกันเล๊ยยยย~ 🌷
+              </p>
+              <button onclick="nextPage()">ไปต่อ 💌</button>
             </div>
+          `
+        },
+        {
+          bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')",
+          content: `
+            <div class="page">
+              <h1>ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️</h1>
+              <p>
+                ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
+                แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
+                เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖
+              </p>
+              <button onclick="nextPage()">ต่อไป 🌸</button>
+            </div>
+          `
+        },
+        {
+          bg: "url('https://images.unsplash.com/photo-1505672678657-cc7037095e2c?auto=format&fit=crop&w=1600&q=80')",
+          content: `
+            <div class="page">
+              <h1>ตอนที่ 2: เวลาที่ได้อยู่กับอ้วน 🍃</h1>
+              <p>
+                อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาาา เร็วม๊ากกก 🕰️<br>
+                แค่ได้อยู่ข้าง ๆ ได้คุย ได้หัวเราะด้วยกัน เค้าก็มีความสุขสุด ๆ แล้ว 💞<br>
+                ขอบคุณนะที่อยู่กับเค้าในทุกวันเลยนะอ้วน 🤍
+              </p>
+              <button onclick="nextPage()">ต่อไป 💫</button>
+            </div>
+          `
+        },
+        {
+          bg: "url('https://images.unsplash.com/photo-1471922694854-ff1b63b20054?auto=format&fit=crop&w=1600&q=80')",
+          content: `
+            <div class="page">
+              <h1>ตอนที่ 3: ขอให้อ้วนอยู่กับเค้านานๆ 🥺💕</h1>
+              <p>
+                เค้าไม่รู้อนาคตจะเป็นยังไง แต่สิ่งที่อยากได้คือ...อ้วนอยู่ตรงนี้นานๆนะ 💗<br>
+                ถึงบางวันอาจจะมีงอแง มีงอนบ้าง แต่เค้ารักอ้วนเหมือนเดิมทุกวันเลย ☁️<br>
+                แค่มีอ้วนอยู่ เค้าก็อุ่นใจแล้วจริงๆนะะะ 😚💞
+              </p>
+              <button onclick="nextPage()">ตอนสุดท้าย 💝</button>
+            </div>
+          `
+        },
+        {
+          bg: "url('https://images.unsplash.com/photo-1476673160081-cf065607f449?auto=format&fit=crop&w=1600&q=80')",
+          content: `
+            <div class="page">
+              <div style="font-size:12vw; margin-bottom:12px;">💝</div>
+              <h1>จบแล้วว 💞</h1>
+              <p>
+                แต่เรื่องของเรายังไม่จบนะ 😚<br>
+                เค้าจะอยู่กวนใจอ้วนแบบนี้ทุกวันเลย~ 💕<br>
+                (กดหัวใจเพื่อดูรูปทั้งหมดของเรา)
+              </p>
+              <button onclick="showGallery()" style="background:rgba(255,128,170,0.95)">กดดูรูปทั้งหมด 💗</button>
+            </div>
+          `
+        }
+      ];
+
+      // initial render
+      let idx = 0;
+      container.innerHTML = pages.map((p,i)=>`<div data-page="${i}" class="page-wrapper">${p.content}</div>`).join('');
+      document.body.style.backgroundImage = pages[0].bg;
+
+      // ensure only first page active
+      const activateCurrent = ()=>{
+        document.querySelectorAll('#page-container .page-wrapper').forEach((w, i)=>{
+          const pg = w.querySelector('.page');
+          if(!pg) return;
+          if(i === idx) { pg.classList.add('active'); }
+          else pg.classList.remove('active');
+        });
+      };
+      activateCurrent();
+
+      // nextPage: fade switch + change body background after short delay to allow fade
+      window.nextPage = function() {
+        if(bgm.paused) { bgm.play().catch(()=>{}); musicBtn.style.display='none'; }
+        const prev = container.querySelector(`.page-wrapper:nth-child(${idx+1}) .page`);
+        if(prev) prev.classList.remove('active');
+        idx = Math.min(idx + 1, pages.length - 1);
+        // set background of body to next bg (delay slightly for smooth)
+        setTimeout(()=>{ document.body.style.backgroundImage = pages[idx].bg; }, 80);
+        // activate the new page after tiny timeout to let CSS transition happen
+        setTimeout(()=> activateCurrent(), 80);
+      };
+
+      // showGallery: render gallery page (not in pages array) so other pages untouched
+      window.showGallery = function() {
+        if(bgm.paused) { bgm.play().catch(()=>{}); musicBtn.style.display='none'; }
+        // prepare gallery html
+        const galleryHTML = `
+          <div class="page active" style="padding-top:8vh;">
+            <h1>รวมภาพของเรา 💗</h1>
+            <p>รูปทั้งหมดอยู่ในโฟลเดอร์เดียวกับเว็บ — ตั้งชื่อ photo1.jpg ถึง photo10.jpg</p>
+            <div class="rope-line" aria-hidden="true"></div>
+            <div class="gallery-wrap">
+              <div class="gallery-grid">
+                ${Array.from({length:10}, (_,i)=>{
+                  // random angle between -6 and 6 deg
+                  const angle = (Math.random()*12 - 6).toFixed(2) + 'deg';
+                  return `<div class="gallery-item" style="--angle:${angle}"><img src="photo${i+1}.jpg" alt="photo${i+1}"></div>`;
+                }).join('')}
+              </div>
+            </div>
+            <p style="margin-top:12px;">อบอุ่นเหมือนห้องที่มีรูปของเราแขวนอยู่ 💞</p>
           </div>
-        `
+        `;
+        // replace container content temporarily with gallery to avoid touching pages array
+        container.innerHTML = galleryHTML;
+        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80')";
+      };
+
+      // floating hearts
+      function createFloatingHeart(){
+        const el = document.createElement('div');
+        el.className = 'floating-heart';
+        el.textContent = '💗';
+        el.style.left = Math.random()*100 + 'vw';
+        el.style.animationDuration = (5 + Math.random()*4) + 's';
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 7000);
       }
-    ];
+      setInterval(createFloatingHeart, 700);
 
-    let current = 0;
-    container.innerHTML = pages[0].html;
-    document.body.style.backgroundImage = pages[0].bg;
-
-    function nextPage() {
-      const oldPage = container.querySelector(".page.active");
-      if (oldPage) oldPage.classList.remove("active");
-
-      current++;
-      if (current >= pages.length) current = pages.length - 1;
-
-      const newPage = document.createElement("div");
-      newPage.innerHTML = pages[current].html;
-      container.innerHTML = newPage.innerHTML;
-      document.body.style.backgroundImage = pages[current].bg;
-
-      const active = container.querySelector(".page");
-      setTimeout(() => active.classList.add("active"), 50);
-    }
+      // expose for debug if needed
+      window._app = { pages };
+    });
   </script>
 </body>
 </html>
