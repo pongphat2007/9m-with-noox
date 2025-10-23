@@ -6,13 +6,16 @@
   <title>ถึงอ้วนของเค้า 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
+    * {
+      transition: background 1.5s ease-in-out, background-image 1.5s ease-in-out;
+      box-sizing: border-box;
+    }
 
     body {
       background: #ffe6f2;
       font-family: 'Prompt', sans-serif;
       text-align: center;
-      padding: 10vh 5vw 0;
+      padding: 12vh 5vw 0;
       color: #fff;
       margin: 0;
       height: 100vh;
@@ -20,43 +23,34 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
-    }
-
-    h1, p, button {
-      color: #fff;
-      -webkit-text-stroke: 1.2px black;
-      text-shadow: none;
+      position: relative;
     }
 
     h1 {
-      font-size: clamp(28px, 4vw, 46px);
-      font-weight: 600;
-      animation: fadeIn 1.8s ease-in-out;
-      margin-bottom: 20px;
+      font-size: 6vw;
+      animation: fadeIn 2s ease-in-out;
+      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
     }
 
     p {
-      font-size: clamp(18px, 2.6vw, 26px);
+      font-size: 4.5vw;
+      margin: 20px auto;
+      width: 90%;
       line-height: 1.8;
-      max-width: 90%;
-      margin: 10px auto 20px;
-      animation: fadeIn 2.5s ease-in-out;
-      -webkit-text-stroke: 0.6px black;
+      animation: fadeIn 3s ease-in-out;
+      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
     }
 
     button {
       background-color: rgba(255, 153, 204, 0.9);
       border: none;
-      padding: 12px 30px;
+      padding: 3vw 7vw;
       border-radius: 30px;
       cursor: pointer;
       color: white;
-      font-size: clamp(18px, 2.3vw, 22px);
-      font-weight: 600;
+      font-size: 5vw;
       transition: 0.3s;
-      animation: fadeIn 2.8s ease-in-out;
-      -webkit-text-stroke: 0.5px black;
+      animation: fadeIn 4s ease-in-out;
     }
 
     button:hover {
@@ -66,19 +60,19 @@
 
     .music-btn {
       position: fixed;
-      top: 15px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
       background: #ff99cc;
       border: none;
       border-radius: 25px;
-      padding: 10px 25px;
+      padding: 12px 25px;
       font-size: 18px;
       color: white;
       box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
       z-index: 1000;
       animation: fadeIn 1.5s ease-in-out;
-      -webkit-text-stroke: 0.5px black;
+      white-space: nowrap;
     }
 
     .music-btn:hover {
@@ -87,15 +81,14 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .heart {
-      font-size: 13vw;
+      font-size: 15vw;
       color: #ff6699;
       animation: heartbeat 1.5s infinite;
-      text-shadow: 0 0 8px #000;
     }
 
     @keyframes heartbeat {
@@ -103,38 +96,150 @@
       50% { transform: scale(1.2); }
     }
 
-    /* 🎞️ หน้าแกลเลอรี่ */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      justify-items: center;
-      width: 90%;
+    .floating-heart {
+      position: absolute;
+      color: #ffb6c1;
+      font-size: 6vw;
+      animation: floatUp 6s linear forwards;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.8); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+
+    .gift-heart {
+      font-size: 20vw;
+      color: #ff80a8;
+      animation: bigHeartbeat 1.5s infinite;
+      text-shadow: 0 0 20px rgba(255, 160, 200, 0.8);
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .gift-heart:hover {
+      transform: scale(1.2);
+    }
+
+    @keyframes bigHeartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* 🌸 แกลเลอรี่แบบอบอุ่น */
+    .gallery-container {
+      position: relative;
+      padding: 50px 10px;
+      max-width: 1100px;
       margin: 0 auto;
+      animation: fadeIn 2s ease-in-out;
     }
 
-    .gallery img {
+    /* เงาไม้จากหน้าต่าง */
+    .window-shadow {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 300px;
+      height: 100%;
+      background: repeating-linear-gradient(135deg,
+        rgba(255, 255, 255, 0.07) 0px,
+        rgba(255, 255, 255, 0.07) 20px,
+        transparent 20px,
+        transparent 60px
+      );
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* เชือกแขวน */
+    .rope {
+      position: relative;
+      height: 80px;
+      border-top: 3px solid rgba(150, 75, 0, 0.5);
+      margin-bottom: 30px;
+    }
+
+    .rope::after {
+      content: "🩷🩵💛";
+      position: absolute;
+      left: 50%;
+      top: -15px;
+      transform: translateX(-50%);
+      font-size: 24px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 220px;
+      height: 250px;
+      background: #fff;
       border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 182, 193, 0.8);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      padding: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+      transform: rotate(calc(var(--angle) * 1deg));
+      transition: transform 0.3s ease;
     }
 
-    .gallery img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(255, 160, 200, 0.9);
+    .photo-frame::before {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background: #f8c8dc;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px #e09,
+                  2px 2px 8px rgba(0,0,0,0.2);
     }
 
+    .photo-frame::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      width: 2px;
+      height: 30px;
+      background: rgba(100, 50, 0, 0.5);
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 46px; }
+      p { font-size: 26px; }
+      button { font-size: 22px; padding: 15px 35px; }
+      .music-btn { font-size: 20px; padding: 10px 25px; }
+    }
   </style>
 </head>
 
 <body>
-  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 เปิดเพลงเบา ๆ 🎶</button>
+  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
 
   <audio id="bgm" loop>
-    <source src="mylove.mp3" type="audio/mp3">
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/29/audio_6f41a9a01b.mp3?filename=my-love-145040.mp3" type="audio/mp3">
   </audio>
 
   <div id="heart-container" class="heart">💗</div>
@@ -143,8 +248,8 @@
     <h1>หมูอ้วนของเค้า~ 💕</h1>
     <p>
       เขียนโค้ดมาจีบอ้วนนน 😚<br>
-      ให้อ้วนได้ดีใจ ให้รู้ว่าเค้ารักมากแค่ไหน~ 💗<br>
-      ไปต่อกันเล๊ยยย~ 🌷
+      ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
+      ไปต่อกันเล๊ยยยย~ 🌷
     </p>
     <button onclick="nextPage()">ไปต่อ 💌</button>
   </div>
@@ -152,8 +257,8 @@
   <script>
     const music = document.getElementById("bgm");
     const musicBtn = document.getElementById("musicBtn");
-    const content = document.getElementById("content");
-    let page = 0;
+    const heart = document.getElementById("heart-container");
+    let page = -1;
 
     function playMusic() {
       music.play();
@@ -161,69 +266,89 @@
     }
 
     const pages = [
-      {
-        title: "ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️",
-        text: `
-          ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
-          แต่พอได้คุยกับอ้วนแล้ว แฟนใจดีมากกก น่ารักสุดดๆๆ 😳<br>
-          เค้าชอบตอนอ้วนหัวเราะมากเลยยย มันน่ารักม๊ากก 🫠💖
-        `,
+      { title: "ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️",
+        text: `ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
+        แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
+        เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖`,
         bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')"
       },
-      {
-        title: "ตอนที่ 2: เวลาที่ได้อยู่กับอ้วน 🍃",
-        text: `
-          อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาา เร็วม๊ากก 🕰️<br>
-          แค่อ้วนยิ้ม เค้าก็มีความสุขแล้ว 😚💞<br>
-          อยากอยู่กับอ้วนแบบนี้ไปนาน ๆ เลย 💗
-        `,
-        bg: "url('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1600&q=80')"
+      { title: "ตอนที่ 2: เวลาที่ได้อยู่กับอ้วนน 🍃",
+        text: `อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาาา เร็วม๊ากกก 🕰️<br>
+        แค่ได้นั่งข้างๆอ้วนนก็มีความสุขมากแล้ววววว ☺️<br>
+        เค้าชอบอยู่ใกล้ๆอ้วนนนที่สุดในโลกเลย 💞`,
+        bg: "url('https://images.unsplash.com/photo-1439405326854-014607f694d7?auto=format&fit=crop&w=1600&q=80')"
       },
-      {
-        title: "ตอนสุดท้าย: รวมความทรงจำของเรา 🎞️",
-        text: `
-          ขอบคุณที่อยู่กับเค้ามาตลอดเลยนะอ้วน 💕<br>
-          รักอ้วนที่สุดในโลกเลย 💗<br>
-          คลิก "ดูภาพความทรงจำ" ได้เลยน้า 📸
-        `,
-        bg: "url('https://images.unsplash.com/photo-1535407335-0e3b3b006e6d?auto=format&fit=crop&w=1600&q=80')",
-        isGallery: true
+      { title: "ตอนที่ 3: ขอให้อ้วนอยู่กับเค้านานๆ 🥺💕",
+        text: `เค้าไม่รู้อนาคตจะเป็นยังไง แต่สิ่งที่อยากได้คือ...อ้วนอยู่ตรงนี้นานๆนะ 💗<br>
+        ถึงบางวันอาจจะมีงอแง มีงอนบ้าง แต่เค้ารักอ้วนเหมือนเดิมทุกวันเลย ☁️<br>
+        แค่มีอ้วนอยู่ เค้าก็อุ่นใจแล้วจริงๆนะะะ 😚💞`,
+        bg: "url('https://images.unsplash.com/photo-1471922694854-ff1b63b20054?auto=format&fit=crop&w=1600&q=80')"
+      },
+      { title: "ตอนสุดท้าย: ขอบคุณนะอ้วน 🌙",
+        text: `ขอบคุณที่อยู่กับเค้านะ 💗 ถึงบางวันจะงอแงบ้างแต่เค้าก็รักอ้วนนะ 😚<br>
+        แค่มีอ้วนอยู่ เค้าก็รู้สึกว่าโลกมันน่ารักขึ้นเยอะเลย 🥰<br>
+        อย่าแอบหนีเค้าไปไหนนะ ไม่งั้นเค้าจะงอแงจริง ๆ ด้วย! 😤💕`,
+        bg: "url('https://images.unsplash.com/photo-1476673160081-cf065607f449?auto=format&fit=crop&w=1600&q=80')"
       }
     ];
 
     function nextPage() {
+      if (music.paused) music.play();
+      page++;
+
+      if (page >= 0) heart.style.display = "none";
+      if (page === 0) musicBtn.style.display = "none";
+
       if (page < pages.length) {
         const p = pages[page];
         document.body.style.backgroundImage = p.bg;
-        content.style.opacity = 0;
-
-        setTimeout(() => {
-          content.innerHTML = `
-            <h1>${p.title}</h1>
-            <p>${p.text}</p>
-            ${p.isGallery
-              ? `<button onclick="showGallery()">ดูภาพความทรงจำ 📷</button>`
-              : `<button onclick="nextPage()">ไปต่อ 💌</button>`
-            }
-          `;
-          content.style.opacity = 1;
-        }, 400);
-
-        page++;
+        document.getElementById("content").innerHTML = `
+          <h1>${p.title}</h1>
+          <p>${p.text}</p>
+          <button onclick="nextPage()">ต่อไป 💌</button>
+        `;
+      } else if (page === pages.length) {
+        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1600&q=80')";
+        document.getElementById("content").innerHTML = `
+          <div class="gift-heart" onclick="showGallery()">💝</div>
+          <h1>จบแล้วว 💞</h1>
+          <p>แต่เรื่องของเรายังไม่จบนะ 😚<br>
+          เค้าจะอยู่กวนใจอ้วนแบบนี้ทุกวันเลย~ 💕<br>
+          (ลองกดหัวใจดูสิ 💝)</p>
+        `;
       }
     }
 
     function showGallery() {
-      document.body.style.backgroundImage =
-        "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80')";
-      content.innerHTML = `
-        <h1>ภาพความทรงจำของเรา 💞</h1>
-        <div class="gallery">
-          ${Array.from({ length: 10 }, (_, i) => `<img src="photo${i + 1}.jpg" alt="photo${i + 1}">`).join("")}
+      document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80')";
+      document.getElementById("content").innerHTML = `
+        <div class="gallery-container">
+          <div class="window-shadow"></div>
+          <h1>รวมภาพของเรา 💗</h1>
+          <div class="rope"></div>
+          <div class="gallery">
+            ${Array.from({length: 10}, (_, i) => `
+              <div class="photo-frame" style="--angle:${(Math.random() * 10 - 5).toFixed(1)}">
+                <img src="https://source.unsplash.com/collection/190727/400x400?sig=${i+1}" alt="photo${i+1}">
+              </div>
+            `).join('')}
+          </div>
+          <p>อบอุ่นเหมือนห้องที่มีแสงแดดส่องเข้ามา~ ☀️💞</p>
         </div>
-        <p>ขอบคุณที่อยู่ในทุกช่วงเวลาของเค้านะอ้วน 💖</p>
       `;
     }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("floating-heart");
+      heart.textContent = "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createHeart, 500);
   </script>
 </body>
 </html>
