@@ -134,6 +134,8 @@
       max-width: 1100px;
       margin: 0 auto;
       animation: fadeIn 2s ease-in-out;
+      overflow-y: auto; /* ✅ เพิ่มส่วนนี้ให้เลื่อนได้ในมือถือ */
+      max-height: 90vh; /* ✅ จำกัดความสูงไม่ให้เกินหน้าจอ */
     }
 
     .window-shadow {
@@ -235,9 +237,8 @@
 <body>
   <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
 
-  <!-- ✅ เปลี่ยนเฉพาะ path เพลงให้ GitHub โหลดได้ -->
   <audio id="bgm" loop>
-    <source src="https://raw.githubusercontent.com/USERNAME/REPO/main/mylove.mp3" type="audio/mp3">
+    <source src="mylove.mp3" type="audio/mp3">
   </audio>
 
   <div id="heart-container" class="heart">💗</div>
@@ -259,8 +260,16 @@
     let page = -1;
 
     function playMusic() {
-      music.play();
-      musicBtn.style.display = "none";
+      /* ✅ เพิ่ม try-catch เพื่อให้เล่นเพลงได้ในมือถือ */
+      try {
+        music.play().then(() => {
+          musicBtn.style.display = "none";
+        }).catch(() => {
+          alert("กดปุ่มอีกครั้งเพื่อเปิดเพลงน้า 💕");
+        });
+      } catch (e) {
+        alert("ไม่สามารถเล่นเพลงได้ในตอนนี้ 😅");
+      }
     }
 
     const pages = [
@@ -291,7 +300,7 @@
     ];
 
     function nextPage() {
-      if (music.paused) music.play();
+      if (music.paused) playMusic();
       page++;
 
       if (page >= 0) heart.style.display = "none";
@@ -327,7 +336,7 @@
           <div class="gallery">
             ${Array.from({length: 10}, (_, i) => `
               <div class="photo-frame" style="--angle:${(Math.random() * 10 - 5).toFixed(1)}">
-                <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/photo${i+1}.jpg" alt="photo${i+1}">
+                <img src="photo${i+1}.jpg" alt="photo${i+1}">
               </div>
             `).join('')}
           </div>
