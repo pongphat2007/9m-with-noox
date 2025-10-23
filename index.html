@@ -5,26 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ถึงอ้วนของเค้า 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    * { box-sizing: border-box; transition: all 1s ease-in-out; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
+      background: #ffe6f2;
       font-family: 'Prompt', sans-serif;
       text-align: center;
-      background: #ffe6f2;
-      margin: 0;
-      padding: 12vh 5vw;
-      overflow: hidden;
+      padding: 12vh 5vw 0;
       color: #fff;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      transition: background-image 1.2s ease-in-out, opacity 1s ease-in-out;
     }
 
     h1 {
       font-size: 6vw;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in-out;
+      text-shadow: 0 0 4px #000, 0 0 8px #000;
     }
 
     p {
@@ -32,7 +37,8 @@
       margin: 20px auto;
       width: 90%;
       line-height: 1.8;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+      animation: fadeIn 3s ease-in-out;
+      text-shadow: 0 0 4px #000, 0 0 8px #000;
     }
 
     button {
@@ -44,9 +50,14 @@
       color: white;
       font-size: 5vw;
       transition: 0.3s;
+      animation: fadeIn 4s ease-in-out;
+      text-shadow: 0 0 3px #000;
     }
 
-    button:hover { background-color: rgba(255, 102, 179, 0.9); transform: scale(1.05); }
+    button:hover {
+      background-color: rgba(255, 102, 179, 0.9);
+      transform: scale(1.05);
+    }
 
     .music-btn {
       position: fixed;
@@ -61,150 +72,150 @@
       color: white;
       box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
       z-index: 1000;
+      animation: fadeIn 1.5s ease-in-out;
+      white-space: nowrap;
+      text-shadow: 0 0 3px #000;
     }
 
-    .gift-heart {
-      font-size: 18vw;
-      color: #ff80a8;
+    .music-btn:hover {
+      background: #ff66b2;
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .heart {
+      font-size: 15vw;
+      color: #ff6699;
       animation: heartbeat 1.5s infinite;
-      cursor: pointer;
-      margin-bottom: 20px;
+      text-shadow: 0 0 8px #000;
     }
 
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      50% { transform: scale(1.2); }
     }
 
-    .page {
-      display: none;
-      animation: fadeIn 1.2s ease-in-out;
-    }
-
-    .active { display: block; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    /* แกลเลอรี */
     .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       padding: 20px;
+      justify-items: center;
     }
 
     .gallery img {
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
+      width: 100%;
+      max-width: 300px;
       border-radius: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transform: rotate(var(--angle));
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-    }
-
-    .gallery img::before {
-      content: '';
-      position: absolute;
-      width: 3px;
-      height: 30px;
-      background: #e0b0c7;
-      top: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 5px;
+      box-shadow: 0 0 15px rgba(255, 192, 203, 0.7);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .gallery img:hover {
-      transform: rotate(0deg) scale(1.05);
-      box-shadow: 0 10px 25px rgba(255,182,193,0.6);
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 160, 200, 0.9);
+    }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 46px; }
+      p { font-size: 26px; }
+      button { font-size: 22px; padding: 15px 35px; }
+      .music-btn { font-size: 20px; padding: 10px 25px; }
     }
   </style>
 </head>
+
 <body>
-  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 เปิดเพลงเบา ๆ 🎶</button>
+  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
 
   <audio id="bgm" loop>
     <source src="mylove.mp3" type="audio/mp3">
   </audio>
 
-  <!-- 🔸 หน้าแรก -->
-  <div class="page active" id="page0">
+  <div id="heart-container" class="heart">💗</div>
+
+  <div id="content" class="fade">
     <h1>หมูอ้วนของเค้า~ 💕</h1>
-    <p>เขียนโค้ดมาจีบอ้วนนน 😚<br>ให้อ้วนได้ดีใจ ให้อ้วนรู้ว่าเค้ารักมากแค่ไหน~ 💗<br>ไปต่อกันเล๊ยยย~ 🌷</p>
+    <p>
+      เขียนโค้ดมาจีบอ้วนนน 😚<br>
+      ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
+      ไปต่อกันเล๊ยยยย~ 🌷
+    </p>
     <button onclick="nextPage()">ไปต่อ 💌</button>
   </div>
 
-  <!-- 🔸 ตอนที่ 1 -->
-  <div class="page" id="page1" data-bg="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80">
-    <h1>ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️</h1>
-    <p>ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง 💕<br>แต่พอได้คุยกับอ้วนแล้วว แฟนใจดีมากกก 😳<br>เค้าชอบตอนอ้วนหัวเราะมากเลยยยย 🫠💖</p>
-    <button onclick="nextPage()">ต่อไป 💌</button>
-  </div>
-
-  <!-- 🔸 ตอนที่ 2 -->
-  <div class="page" id="page2" data-bg="https://images.unsplash.com/photo-1439405326854-014607f694d7?auto=format&fit=crop&w=1600&q=80">
-    <h1>ตอนที่ 2: เวลาที่อยู่ด้วยกัน 🍃</h1>
-    <p>อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาาา 🕰️<br>แค่ได้นั่งข้างๆ อ้วนน เค้าก็มีความสุขมากแล้ว ☺️<br>เค้าชอบอยู่ใกล้ๆ อ้วนที่สุดในโลกเลย 💞</p>
-    <button onclick="nextPage()">ต่อไป 💌</button>
-  </div>
-
-  <!-- 🔸 ตอนที่ 3 -->
-  <div class="page" id="page3" data-bg="https://images.unsplash.com/photo-1471922694854-ff1b63b20054?auto=format&fit=crop&w=1600&q=80">
-    <h1>ตอนที่ 3: ขอให้อ้วนอยู่กับเค้านานๆ 🥺💕</h1>
-    <p>เค้าไม่รู้อนาคตจะเป็นยังไง แต่สิ่งที่อยากได้คือ...อ้วนอยู่ตรงนี้นานๆนะ 💗<br>ถึงบางวันจะงอแง เค้าก็รักอ้วนเหมือนเดิมทุกวันเลย ☁️<br>แค่มีอ้วนอยู่ เค้าก็อุ่นใจแล้วจริงๆนะะะ 😚💞</p>
-    <button onclick="nextPage()">ต่อไป 💌</button>
-  </div>
-
-  <!-- 🔸 หน้าสุดท้าย -->
-  <div class="page" id="page4" data-bg="https://images.unsplash.com/photo-1476673160081-cf065607f449?auto=format&fit=crop&w=1600&q=80">
-    <div class="gift-heart" onclick="showGallery()">💝</div>
-    <h1>ตอนสุดท้าย: ขอบคุณนะอ้วน 🌙</h1>
-    <p>ขอบคุณที่อยู่กับเค้านะ 💗 ถึงบางวันจะงอแงแต่เค้าก็รักอ้วนนะ 😚<br>แค่มีอ้วนอยู่ เค้าก็รู้สึกว่าโลกมันน่ารักขึ้นเยอะเลย 🥰<br>(ลองกดหัวใจดูสิ 💝)</p>
-  </div>
-
-  <!-- 🔸 หน้าแกลเลอรี่ -->
-  <div class="page" id="gallery" data-bg="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80">
-    <h1>รวมภาพของเรา 💗</h1>
-    <div class="gallery" id="galleryContainer"></div>
-    <p>เหมือนรูปแขวนไว้ในบ้านของเราเลยเนอะ 🏡💞</p>
-  </div>
-
   <script>
-    const pages = document.querySelectorAll('.page');
-    const music = document.getElementById('bgm');
-    const musicBtn = document.getElementById('musicBtn');
-    let current = 0;
+    const music = document.getElementById("bgm");
+    const musicBtn = document.getElementById("musicBtn");
+    const content = document.getElementById("content");
+    let page = 0;
 
     function playMusic() {
       music.play();
       musicBtn.style.display = "none";
     }
 
+    const pages = [
+      {
+        title: "ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️",
+        text: `
+          ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
+          แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
+          เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖
+        `,
+        bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')"
+      },
+      {
+        title: "ตอนที่ 2: เวลาที่ได้อยู่กับอ้วน 🍃",
+        text: `
+          อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาาา เร็วม๊ากกก 🕰️<br>
+          แค่อ้วนยิ้ม เค้าก็มีความสุขแล้ววว 😚💞<br>
+          อยากอยู่กับอ้วนแบบนี้ไปนานๆเลยน้าาา 💗
+        `,
+        bg: "url('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1600&q=80')"
+      },
+      {
+        title: "ตอนสุดท้าย: รวมความทรงจำของเรา 🎞️",
+        text: `
+          ขอบคุณที่อยู่กับเค้ามาตลอดเลยนะอ้วน 💕<br>
+          รักอ้วนที่สุดในโลกเลยย 💗<br>
+          คลิก "ดูภาพความทรงจำ" ได้เลยน้า 📸
+        `,
+        bg: "url('https://images.unsplash.com/photo-1535407335-0e3b3b006e6d?auto=format&fit=crop&w=1600&q=80')",
+        isGallery: true
+      }
+    ];
+
     function nextPage() {
-      if (music.paused) music.play();
-      if (current < pages.length - 2) {
-        pages[current].classList.remove('active');
-        current++;
-        const bg = pages[current].dataset.bg;
-        if (bg) document.body.style.backgroundImage = `url('${bg}')`;
-        pages[current].classList.add('active');
+      if (page < pages.length) {
+        const p = pages[page];
+        document.body.style.backgroundImage = p.bg;
+        content.innerHTML = `
+          <h1>${p.title}</h1>
+          <p>${p.text}</p>
+          ${p.isGallery
+            ? `<button onclick="showGallery()">ดูภาพความทรงจำ 📷</button>`
+            : `<button onclick="nextPage()">ไปต่อ 💌</button>`
+          }
+        `;
+        page++;
       }
     }
 
     function showGallery() {
-      pages[current].classList.remove('active');
-      document.body.style.backgroundImage = `url('${document.getElementById("gallery").dataset.bg}')`;
-      const gallery = document.getElementById("galleryContainer");
-      const angles = ['-5deg','3deg','-7deg','2deg','6deg','-3deg','4deg','-6deg','5deg','-2deg'];
-      gallery.innerHTML = Array.from({length: 10}, (_, i) => 
-        `<img src="photo${i+1}.jpg" style="--angle:${angles[i % angles.length]};">`
-      ).join('');
-      document.getElementById("gallery").classList.add("active");
+      document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80')";
+      content.innerHTML = `
+        <h1>ภาพความทรงจำของเรา 💞</h1>
+        <div class="gallery">
+          ${Array.from({length: 10}, (_, i) => `<img src="photo${i+1}.jpg" alt="photo${i+1}">`).join('')}
+        </div>
+        <p>ขอบคุณที่อยู่ในทุกช่วงเวลาของเค้านะอ้วน 💖</p>
+      `;
     }
   </script>
 </body>
