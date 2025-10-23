@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="th">
 <head>
   <meta charset="utf-8">
@@ -6,7 +6,7 @@
   <title>ถึงอ้วนของเค้า 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * { transition: background 1.5s ease-in-out; box-sizing: border-box; }
+    * { box-sizing: border-box; }
     body {
       background: #ffe6f2;
       font-family: 'Prompt', sans-serif;
@@ -19,12 +19,15 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      transition: background 1.8s ease-in-out;
     }
 
     h1 {
       font-size: 6vw;
-      animation: fadeIn 2s ease-in-out;
-      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
+      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 1.2s ease;
     }
 
     p {
@@ -32,8 +35,10 @@
       margin: 20px auto;
       width: 90%;
       line-height: 1.8;
-      animation: fadeIn 3s ease-in-out;
-      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
+      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 1.2s ease;
     }
 
     button {
@@ -45,7 +50,8 @@
       color: white;
       font-size: 5vw;
       transition: 0.3s;
-      animation: fadeIn 4s ease-in-out;
+      opacity: 0;
+      transform: translateY(10px);
     }
 
     button:hover {
@@ -67,18 +73,13 @@
       color: white;
       box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
       z-index: 1000;
-      animation: fadeIn 1.5s ease-in-out;
-      white-space: nowrap;
+      transition: all 1s ease-in-out;
+      opacity: 1;
     }
 
     .music-btn:hover {
       background: #ff66b2;
       transform: translateX(-50%) scale(1.05);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .heart {
@@ -124,6 +125,10 @@
       button { font-size: 22px; padding: 15px 35px; }
       .music-btn { font-size: 20px; padding: 10px 25px; }
     }
+
+    /* เพิ่มเอฟเฟกต์เฟดระหว่างเปลี่ยนหน้า */
+    .fade-in { opacity: 1 !important; transform: translateY(0) !important; }
+    .fade-out { opacity: 0 !important; transform: translateY(10px) !important; }
   </style>
 </head>
 <body>
@@ -149,11 +154,14 @@
   <script>
     const music = document.getElementById("bgm");
     const musicBtn = document.getElementById("musicBtn");
+    const content = document.getElementById("content");
     let page = 0;
+    let animating = false;
 
     function playMusic() {
       music.play();
-      musicBtn.style.display = "none"; // ซ่อนปุ่มหลังจากเปิดเพลง
+      musicBtn.style.opacity = "0";
+      setTimeout(() => musicBtn.style.display = "none", 800);
     }
 
     const pages = [
@@ -196,31 +204,43 @@
     ];
 
     function nextPage() {
-      if (music.paused) music.play();
+      if (animating) return;
+      animating = true;
       page++;
+      if (music.paused) music.play();
 
-      const heart = document.getElementById("heart-container");
-      if (page > 0) heart.style.display = "none";
-      if (page === 1) musicBtn.style.display = "none"; // ซ่อนปุ่มหลังจากเปลี่ยนหน้าแรก
+      // เอฟเฟกต์จางหาย
+      Array.from(content.children).forEach(el => el.classList.remove("fade-in"));
+      Array.from(content.children).forEach(el => el.classList.add("fade-out"));
 
-      if (page < pages.length) {
-        const p = pages[page];
-        document.body.style.backgroundImage = p.bg;
-        document.getElementById("content").innerHTML = `
-          <h1>${p.title}</h1>
-          <p>${p.text}</p>
-          <button onclick="nextPage()">ต่อไป 💌</button>
-        `;
-      } else {
-        document.getElementById("content").innerHTML = `
-          <div class="gift-heart">💝</div>
-          <h1>จบแล้วว 💞</h1>
-          <p>
-            แต่เรื่องของเรายังไม่จบนะ 😚<br>
-            เค้าจะอยู่กวนใจอ้วนแบบนี้ทุกวันเลย~ 💕
-          </p>
-        `;
-      }
+      setTimeout(() => {
+        if (page < pages.length) {
+          const p = pages[page];
+          document.body.style.backgroundImage = p.bg;
+          content.innerHTML = `
+            <h1>${p.title}</h1>
+            <p>${p.text}</p>
+            <button onclick="nextPage()">ต่อไป 💌</button>
+          `;
+        } else {
+          content.innerHTML = `
+            <div class="gift-heart">💝</div>
+            <h1>จบแล้วว 💞</h1>
+            <p>
+              แต่เรื่องของเรายังไม่จบนะ 😚<br>
+              เค้าจะอยู่กวนใจอ้วนแบบนี้ทุกวันเลย~ 💕
+            </p>
+          `;
+        }
+
+        // เอฟเฟกต์จางเข้า
+        setTimeout(() => {
+          Array.from(content.children).forEach(el => {
+            el.classList.add("fade-in");
+          });
+          animating = false;
+        }, 50);
+      }, 900);
 
       for (let i = 0; i < 25; i++) setTimeout(createHeart, i * 100);
     }
