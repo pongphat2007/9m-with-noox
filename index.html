@@ -11,7 +11,7 @@
       background: #ffe6f2;
       font-family: 'Prompt', sans-serif;
       text-align: center;
-      padding: 15vh 5vw 0;
+      padding: 12vh 5vw 0;
       color: #fff;
       margin: 0;
       height: 100vh;
@@ -51,6 +51,28 @@
     button:hover {
       background-color: rgba(255, 102, 179, 0.9);
       transform: scale(1.05);
+    }
+
+    /* ปุ่มเปิดเพลง */
+    .music-btn {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff99cc;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 25px;
+      font-size: 18px;
+      color: white;
+      box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
+      z-index: 1000;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .music-btn:hover {
+      background: #ff66b2;
+      transform: translateX(-50%) scale(1.05);
     }
 
     @keyframes fadeIn {
@@ -99,12 +121,17 @@
       h1 { font-size: 46px; }
       p { font-size: 26px; }
       button { font-size: 22px; padding: 15px 35px; }
+      .music-btn { font-size: 20px; padding: 10px 25px; }
     }
   </style>
 </head>
 <body>
+  <!-- ปุ่มเปิดเพลง -->
+  <button class="music-btn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
+
+  <!-- เพลง -->
   <audio id="bgm" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_746c6429e0.mp3?filename=love-theme-soft-piano-14237.mp3" type="audio/mp3">
+    <source src="mylove.mp3" type="audio/mp3">
   </audio>
 
   <div id="heart-container" class="heart">💗</div>
@@ -121,6 +148,11 @@
   <script>
     const music = document.getElementById("bgm");
     let page = 0;
+
+    function playMusic() {
+      music.play();
+      alert("เปิดเพลงให้คนน่ารักฟังแล้วนะ 💕🎶");
+    }
 
     const pages = [
       {
