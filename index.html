@@ -6,15 +6,13 @@
   <title>ถึงอ้วนของเค้า 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       background: #ffe6f2;
       font-family: 'Prompt', sans-serif;
       text-align: center;
-      padding: 12vh 5vw 0;
+      padding: 10vh 5vw 0;
       color: #fff;
       margin: 0;
       height: 100vh;
@@ -22,39 +20,43 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      transition: background-image 1.2s ease-in-out, opacity 1s ease-in-out;
+      transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
     }
 
     h1, p, button {
+      color: #fff;
       -webkit-text-stroke: 1.2px black;
-      text-shadow: 0 0 3px #000;
+      text-shadow: none;
     }
 
     h1 {
-      font-size: 6vw;
-      animation: fadeIn 2s ease-in-out;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 600;
+      animation: fadeIn 1.8s ease-in-out;
+      margin-bottom: 20px;
     }
 
     p {
-      font-size: 4.5vw;
-      margin: 20px auto;
-      width: 90%;
+      font-size: clamp(18px, 2.6vw, 26px);
       line-height: 1.8;
-      animation: fadeIn 3s ease-in-out;
+      max-width: 90%;
+      margin: 10px auto 20px;
+      animation: fadeIn 2.5s ease-in-out;
+      -webkit-text-stroke: 0.6px black;
     }
 
     button {
       background-color: rgba(255, 153, 204, 0.9);
       border: none;
-      padding: 3vw 7vw;
+      padding: 12px 30px;
       border-radius: 30px;
       cursor: pointer;
       color: white;
-      font-size: 5vw;
+      font-size: clamp(18px, 2.3vw, 22px);
+      font-weight: 600;
       transition: 0.3s;
-      animation: fadeIn 4s ease-in-out;
+      animation: fadeIn 2.8s ease-in-out;
       -webkit-text-stroke: 0.5px black;
-      text-shadow: 0 0 3px #000;
     }
 
     button:hover {
@@ -64,19 +66,18 @@
 
     .music-btn {
       position: fixed;
-      top: 10px;
+      top: 15px;
       left: 50%;
       transform: translateX(-50%);
       background: #ff99cc;
       border: none;
       border-radius: 25px;
-      padding: 12px 25px;
+      padding: 10px 25px;
       font-size: 18px;
       color: white;
       box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
       z-index: 1000;
       animation: fadeIn 1.5s ease-in-out;
-      white-space: nowrap;
       -webkit-text-stroke: 0.5px black;
     }
 
@@ -86,15 +87,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .heart {
-      font-size: 15vw;
+      font-size: 13vw;
       color: #ff6699;
       animation: heartbeat 1.5s infinite;
-      text-shadow: 0 0 10px #000;
+      text-shadow: 0 0 8px #000;
     }
 
     @keyframes heartbeat {
@@ -102,20 +103,22 @@
       50% { transform: scale(1.2); }
     }
 
-    /* แกลเลอรี */
+    /* 🎞️ หน้าแกลเลอรี่ */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
       padding: 20px;
       justify-items: center;
+      width: 90%;
+      margin: 0 auto;
     }
 
     .gallery img {
       width: 100%;
       max-width: 300px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(255, 192, 203, 0.7);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.8);
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
@@ -124,17 +127,11 @@
       box-shadow: 0 0 25px rgba(255, 160, 200, 0.9);
     }
 
-    @media (min-width: 768px) {
-      h1 { font-size: 46px; }
-      p { font-size: 26px; }
-      button { font-size: 22px; padding: 15px 35px; }
-      .music-btn { font-size: 20px; padding: 10px 25px; }
-    }
   </style>
 </head>
 
 <body>
-  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
+  <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 เปิดเพลงเบา ๆ 🎶</button>
 
   <audio id="bgm" loop>
     <source src="mylove.mp3" type="audio/mp3">
@@ -146,8 +143,8 @@
     <h1>หมูอ้วนของเค้า~ 💕</h1>
     <p>
       เขียนโค้ดมาจีบอ้วนนน 😚<br>
-      ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
-      ไปต่อกันเล๊ยยยย~ 🌷
+      ให้อ้วนได้ดีใจ ให้รู้ว่าเค้ารักมากแค่ไหน~ 💗<br>
+      ไปต่อกันเล๊ยยย~ 🌷
     </p>
     <button onclick="nextPage()">ไปต่อ 💌</button>
   </div>
@@ -168,17 +165,17 @@
         title: "ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️",
         text: `
           ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
-          แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
-          เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖
+          แต่พอได้คุยกับอ้วนแล้ว แฟนใจดีมากกก น่ารักสุดดๆๆ 😳<br>
+          เค้าชอบตอนอ้วนหัวเราะมากเลยยย มันน่ารักม๊ากก 🫠💖
         `,
         bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')"
       },
       {
         title: "ตอนที่ 2: เวลาที่ได้อยู่กับอ้วน 🍃",
         text: `
-          อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาาา เร็วม๊ากกก 🕰️<br>
-          แค่อ้วนยิ้ม เค้าก็มีความสุขแล้ววว 😚💞<br>
-          อยากอยู่กับอ้วนแบบนี้ไปนานๆเลยน้าาา 💗
+          อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาา เร็วม๊ากก 🕰️<br>
+          แค่อ้วนยิ้ม เค้าก็มีความสุขแล้ว 😚💞<br>
+          อยากอยู่กับอ้วนแบบนี้ไปนาน ๆ เลย 💗
         `,
         bg: "url('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1600&q=80')"
       },
@@ -186,7 +183,7 @@
         title: "ตอนสุดท้าย: รวมความทรงจำของเรา 🎞️",
         text: `
           ขอบคุณที่อยู่กับเค้ามาตลอดเลยนะอ้วน 💕<br>
-          รักอ้วนที่สุดในโลกเลยย 💗<br>
+          รักอ้วนที่สุดในโลกเลย 💗<br>
           คลิก "ดูภาพความทรงจำ" ได้เลยน้า 📸
         `,
         bg: "url('https://images.unsplash.com/photo-1535407335-0e3b3b006e6d?auto=format&fit=crop&w=1600&q=80')",
@@ -217,11 +214,12 @@
     }
 
     function showGallery() {
-      document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80')";
+      document.body.style.backgroundImage =
+        "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80')";
       content.innerHTML = `
         <h1>ภาพความทรงจำของเรา 💞</h1>
         <div class="gallery">
-          ${Array.from({length: 10}, (_, i) => `<img src="photo${i+1}.jpg" alt="photo${i+1}">`).join('')}
+          ${Array.from({ length: 10 }, (_, i) => `<img src="photo${i + 1}.jpg" alt="photo${i + 1}">`).join("")}
         </div>
         <p>ขอบคุณที่อยู่ในทุกช่วงเวลาของเค้านะอ้วน 💖</p>
       `;
