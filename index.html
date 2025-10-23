@@ -8,27 +8,39 @@
   <style>
     * {
       box-sizing: border-box;
-      transition: background 1.5s ease-in-out, background-image 1.5s ease-in-out;
+      transition: all 0.3s ease-in-out;
     }
 
     body {
-      background: #ffe6f2;
-      font-family: 'Prompt', sans-serif;
-      text-align: center;
-      padding: 12vh 5vw 0;
-      color: #fff;
       margin: 0;
-      min-height: 100vh;
+      font-family: 'Prompt', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      text-align: center;
+      background: #ffe6f2;
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      overflow-x: hidden;
+      transition: background-image 1.5s ease-in-out;
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      padding: 12vh 5vw 0;
+    }
+
+    .page.active {
+      opacity: 1;
+      z-index: 2;
     }
 
     h1 {
       font-size: 6vw;
-      animation: fadeIn 2s ease-in-out;
-      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
+      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
+      animation: fadeIn 1.5s ease-in-out;
     }
 
     p {
@@ -36,8 +48,8 @@
       margin: 20px auto;
       width: 90%;
       line-height: 1.8;
-      animation: fadeIn 3s ease-in-out;
-      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
+      animation: fadeIn 2s ease-in-out;
+      text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
     }
 
     button {
@@ -48,8 +60,8 @@
       cursor: pointer;
       color: white;
       font-size: 5vw;
-      transition: 0.3s;
-      animation: fadeIn 4s ease-in-out;
+      transition: transform 0.3s;
+      animation: fadeIn 3s ease-in-out;
     }
 
     button:hover {
@@ -70,8 +82,6 @@
       color: white;
       box-shadow: 0 4px 10px rgba(255, 182, 193, 0.6);
       z-index: 1000;
-      animation: fadeIn 1.5s ease-in-out;
-      white-space: nowrap;
     }
 
     .music-btn:hover {
@@ -79,17 +89,10 @@
       transform: translateX(-50%) scale(1.05);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .heart {
       font-size: 15vw;
       color: #ff6699;
       animation: heartbeat 1.5s infinite;
-      position: relative;
-      z-index: 1;
     }
 
     @keyframes heartbeat {
@@ -97,116 +100,30 @@
       50% { transform: scale(1.2); }
     }
 
-    .floating-heart {
-      position: absolute;
-      color: #ffb6c1;
-      font-size: 6vw;
-      animation: floatUp 6s linear forwards;
-      opacity: 0;
-      z-index: 0;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(0.8); opacity: 1; }
-      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
-    }
-
-    .gift-heart {
-      font-size: 20vw;
-      color: #ff80a8;
-      animation: bigHeartbeat 1.5s infinite;
-      text-shadow: 0 0 20px rgba(255, 160, 200, 0.8);
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .gift-heart:hover {
-      transform: scale(1.2);
-    }
-
-    @keyframes bigHeartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-
-    /* 🌸 แกลเลอรี่ */
+    /* Gallery */
     .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      padding: 40px 20px 100px;
-      position: relative;
-      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 30px 5vw 80px;
+      animation: fadeIn 2s ease-in-out;
     }
 
-    .gallery-item {
-      position: relative;
-      width: 220px;
-      height: 280px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      transform: rotate(var(--angle));
-      transition: transform 0.3s ease;
-      overflow: hidden;
-    }
-
-    .gallery-item::before {
-      content: "💗";
-      position: absolute;
-      top: -20px;
-      left: calc(50% - 10px);
-      font-size: 24px;
-    }
-
-    .gallery-item img {
+    .gallery img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 12px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(255, 182, 193, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .gallery-item::after {
-      content: "";
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      width: 4px;
-      height: 30px;
-      background: #f8c0d8;
-      border-radius: 2px;
-      transform: translateX(-50%);
-    }
-
-    .gallery-item:hover {
-      transform: rotate(0deg) scale(1.05);
-      z-index: 5;
-    }
-
-    /* ☀️ เงาไม้ */
-    .window-shadow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        45deg,
-        rgba(0,0,0,0.05),
-        rgba(0,0,0,0.05) 20px,
-        transparent 20px,
-        transparent 40px
-      );
-      pointer-events: none;
-      z-index: 0;
-      animation: lightShift 8s infinite alternate ease-in-out;
-    }
-
-    @keyframes lightShift {
-      from { opacity: 0.2; transform: translateX(0); }
-      to { opacity: 0.4; transform: translateX(10px); }
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(255, 105, 180, 0.8);
     }
 
     @media (min-width: 768px) {
@@ -217,113 +134,96 @@
     }
   </style>
 </head>
-
 <body>
   <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
-
   <audio id="bgm" loop>
     <source src="mylove.mp3" type="audio/mp3">
   </audio>
 
-  <div id="heart-container" class="heart">💗</div>
-
-  <div id="content" style="position:relative; z-index:2;">
-    <h1>หมูอ้วนของเค้า~ 💕</h1>
-    <p>
-      เขียนโค้ดมาจีบอ้วนนน 😚<br>
-      ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
-      ไปต่อกันเล๊ยยยย~ 🌷
-    </p>
-    <button onclick="nextPage()">ไปต่อ 💌</button>
-  </div>
-
-  <div class="window-shadow"></div>
+  <div id="page-container"></div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const music = document.getElementById("bgm");
-      const musicBtn = document.getElementById("musicBtn");
-      const heart = document.getElementById("heart-container");
-      let page = -1;
+    const music = document.getElementById("bgm");
+    const musicBtn = document.getElementById("musicBtn");
+    const container = document.getElementById("page-container");
 
-      window.playMusic = function() {
-        music.play();
-        musicBtn.style.display = "none";
+    function playMusic() {
+      music.play();
+      musicBtn.style.display = "none";
+    }
+
+    const pages = [
+      {
+        bg: "url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80')",
+        html: `
+          <div class="page active">
+            <div class="heart">💗</div>
+            <h1>หมูอ้วนของเค้า~ 💕</h1>
+            <p>
+              เขียนโค้ดมาจีบอ้วนนน 😚<br>
+              ให้อ้วนได้ดีใจจจ ให้อ้วนรู้สึกโชคดีสุดดด🩷<br>
+              ไปต่อกันเล๊ยยยย~ 🌷
+            </p>
+            <button onclick="nextPage()">ไปต่อ 💌</button>
+          </div>
+        `
+      },
+      {
+        bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')",
+        html: `
+          <div class="page">
+            <h1>ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️</h1>
+            <p>
+              ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
+              แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
+              เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖
+            </p>
+            <button onclick="nextPage()">ต่อไป 🌸</button>
+          </div>
+        `
+      },
+      {
+        bg: "url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80')",
+        html: `
+          <div class="page">
+            <h1>รวมความทรงจำของเรา 💗</h1>
+            <p>เค้าเก็บรูปพวกนี้ไว้เพราะทุกภาพมี "อ้วน" อยู่ในนั้นเสมอ 🌷</p>
+            <div class="gallery">
+              <img src="photo1.jpg">
+              <img src="photo2.jpg">
+              <img src="photo3.jpg">
+              <img src="photo4.jpg">
+              <img src="photo5.jpg">
+              <img src="photo6.jpg">
+              <img src="photo7.jpg">
+              <img src="photo8.jpg">
+              <img src="photo9.jpg">
+              <img src="photo10.jpg">
+            </div>
+          </div>
+        `
       }
+    ];
 
-      const pages = [
-        {
-          title: "ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️",
-          text: `ตอนนั้นเค้ายังไม่รู้เลยว่าอ้วนเป็นคนยังไงง จะใจดีกับเค้ารึป่าวว💕<br>
-          แต่พอได้คุยกับอ้วนแล้ววว แฟนใจดีมากกกน่ารักสุดดๆๆ 😳<br>
-          เค้าชอบตอนอ้วนหัวเราะมากเลยยยย มันน่ารักม๊ากกกกก 🫠💖`,
-          bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')"
-        },
-        {
-          title: "ตอนที่ 2: เวลาที่ได้อยู่กับอ้วนน 🍃",
-          text: `อยู่ด้วยกันทีไร ไม่อยากให้เวลาผ่านไปเลยอ่าาาา เร็วม๊ากกก 🕰️<br>
-          แค่ได้นั่งข้างๆอ้วนนก็มีความสุขมากแล้ววววว ☺️<br>
-          เค้าชอบอยู่ใกล้ๆอ้วนนนที่สุดในโลกเลย 💞`,
-          bg: "url('https://images.unsplash.com/photo-1439405326854-014607f694d7?auto=format&fit=crop&w=1600&q=80')"
-        },
-        {
-          title: "ตอนสุดท้าย: ขอบคุณนะอ้วน 🌙",
-          text: `ขอบคุณที่อยู่กับเค้านะ 💗 ถึงบางวันจะงอแงบ้างแต่เค้าก็รักอ้วนนะ 😚<br>
-          แค่มีอ้วนอยู่ เค้าก็รู้สึกว่าโลกมันน่ารักขึ้นเยอะเลย 🥰<br>
-          อย่าแอบหนีเค้าไปไหนนะ ไม่งั้นเค้าจะงอแงจริง ๆ ด้วย! 😤💕`,
-          bg: "url('https://images.unsplash.com/photo-1476673160081-cf065607f449?auto=format&fit=crop&w=1600&q=80')"
-        }
-      ];
+    let current = 0;
+    container.innerHTML = pages[0].html;
+    document.body.style.backgroundImage = pages[0].bg;
 
-      window.nextPage = function() {
-        if (music.paused) music.play();
-        page++;
-        if (page >= 0) heart.style.display = "none";
-        if (page === 0) musicBtn.style.display = "none";
+    function nextPage() {
+      const oldPage = container.querySelector(".page.active");
+      if (oldPage) oldPage.classList.remove("active");
 
-        if (page < pages.length) {
-          const p = pages[page];
-          document.body.style.backgroundImage = p.bg;
-          document.getElementById("content").innerHTML = `
-            <h1>${p.title}</h1>
-            <p>${p.text}</p>
-            <button onclick="nextPage()">ต่อไป 💌</button>
-          `;
-        } else if (page === pages.length) {
-          document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1600&q=80')";
-          document.getElementById("content").innerHTML = `
-            <div class="gift-heart" onclick="showGallery()">💝</div>
-            <h1>จบแล้วว 💞</h1>
-            <p>แต่เรื่องของเรายังไม่จบนะ 😚<br>ลองกดหัวใจดูสิ 💝</p>
-          `;
-        }
-      };
+      current++;
+      if (current >= pages.length) current = pages.length - 1;
 
-      window.showGallery = function() {
-        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80')";
-        const galleryHTML = Array.from({ length: 10 }, (_, i) => {
-          const angle = (Math.random() * 10 - 5).toFixed(2) + "deg";
-          return `<div class="gallery-item" style="--angle:${angle}"><img src="photo${i + 1}.jpg" alt="photo${i + 1}"></div>`;
-        }).join('');
-        document.getElementById("content").innerHTML = `
-          <h1>รวมภาพของเรา 💗</h1>
-          <div class="gallery">${galleryHTML}</div>
-          <p>ภาพทั้งหมดอยู่ในโฟลเดอร์เดียวกับเว็บนี้เลย 🌷</p>
-        `;
-      };
+      const newPage = document.createElement("div");
+      newPage.innerHTML = pages[current].html;
+      container.innerHTML = newPage.innerHTML;
+      document.body.style.backgroundImage = pages[current].bg;
 
-      function createHeart() {
-        const heart = document.createElement("div");
-        heart.classList.add("floating-heart");
-        heart.textContent = "💗";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 6000);
-      }
-
-      setInterval(createHeart, 500);
-    });
+      const active = container.querySelector(".page");
+      setTimeout(() => active.classList.add("active"), 50);
+    }
   </script>
 </body>
 </html>
