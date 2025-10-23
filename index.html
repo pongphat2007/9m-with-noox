@@ -128,7 +128,6 @@
       50% { transform: scale(1.15); }
     }
 
-    /* 🌸 แกลเลอรี่แบบอบอุ่น */
     .gallery-container {
       position: relative;
       padding: 50px 10px;
@@ -137,7 +136,6 @@
       animation: fadeIn 2s ease-in-out;
     }
 
-    /* เงาไม้จากหน้าต่าง */
     .window-shadow {
       position: absolute;
       top: 0;
@@ -155,7 +153,6 @@
       z-index: 0;
     }
 
-    /* เชือกแขวน */
     .rope {
       position: relative;
       height: 80px;
@@ -238,8 +235,9 @@
 <body>
   <button class="music-btn" id="musicBtn" onclick="playMusic()">💗 ให้คนน่ารักเปิดเพลงฟัง 🎶🥰</button>
 
+  <!-- ✅ เปลี่ยนเฉพาะ path เพลงให้ GitHub โหลดได้ -->
   <audio id="bgm" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2023/03/29/audio_6f41a9a01b.mp3?filename=my-love-145040.mp3" type="audio/mp3">
+    <source src="https://raw.githubusercontent.com/USERNAME/REPO/main/mylove.mp3" type="audio/mp3">
   </audio>
 
   <div id="heart-container" class="heart">💗</div>
@@ -329,7 +327,7 @@
           <div class="gallery">
             ${Array.from({length: 10}, (_, i) => `
               <div class="photo-frame" style="--angle:${(Math.random() * 10 - 5).toFixed(1)}">
-                <img src="https://source.unsplash.com/collection/190727/400x400?sig=${i+1}" alt="photo${i+1}">
+                <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/photo${i+1}.jpg" alt="photo${i+1}">
               </div>
             `).join('')}
           </div>
