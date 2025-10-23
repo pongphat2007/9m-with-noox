@@ -10,14 +10,14 @@
     body {
       margin: 0;
       font-family: 'Prompt', sans-serif;
-      background: #ffe6f2;
+      background: #ffe6f2; /* พื้นสีพาสเทล ตอนเข้าเว็บไม่มีรูป */
       background-size: cover;
       background-position: center;
       color: #fff;
       height: 100vh;
       overflow: hidden;
       text-align: center;
-      transition: background-image 1.2s ease-in-out;
+      transition: background-image 1.0s ease-in-out, background-color 0.6s ease-in-out;
     }
 
     /* page layers */
@@ -29,6 +29,9 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.9s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .page.active {
       opacity: 1;
@@ -40,7 +43,6 @@
       font-size: 6vw;
       margin: 0.2em 0;
       text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
-      animation: fadeIn 1s ease-in-out;
     }
     p {
       font-size: 4.5vw;
@@ -48,7 +50,6 @@
       width: 90%;
       line-height: 1.8;
       text-shadow: -2px -2px 3px #000, 2px -2px 3px #000;
-      animation: fadeIn 1.2s ease-in-out;
     }
     button {
       background-color: rgba(255,153,204,0.95);
@@ -61,6 +62,7 @@
       transition: transform .2s, background .2s;
     }
     button:hover { transform: scale(1.04); background-color: rgba(255,102,179,0.95); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     .music-btn {
       position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
@@ -68,14 +70,14 @@
       color:#fff; z-index:1001; box-shadow:0 6px 18px rgba(255,182,193,0.5);
     }
 
-    .heart { font-size: 15vw; color: #ff6699; animation: heartbeat 1.4s infinite; margin-bottom: 10px; }
+    .heart { font-size: 15vw; color: #ff6699; animation: heartbeat 1.4s infinite; margin-bottom: 8px; }
     @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
 
     /* floating hearts */
     .floating-heart { position: absolute; color: #ffb6c1; font-size:6vw; animation: floatUp 6s linear forwards; opacity:0; z-index:0; }
     @keyframes floatUp { 0%{transform:translateY(0) scale(0.8); opacity:1} 100%{transform:translateY(-120vh) scale(1.5); opacity:0} }
 
-    /* gallery styles (จะใช้เมื่อเข้า gallery) */
+    /* gallery styles */
     .gallery-wrap { padding: 40px 20px 90px; display:flex; flex-direction:column; align-items:center; }
     .gallery-grid {
       display:flex; flex-wrap:wrap; gap:22px; justify-content:center; max-width:1100px; width:100%;
@@ -89,22 +91,10 @@
     .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; }
     .gallery-item:hover { transform: rotate(0deg) scale(1.05); z-index:5; box-shadow:0 18px 40px rgba(0,0,0,0.35); }
 
-    /* hanging rope + window shadow for atmosphere */
+    /* hanging rope + window shadow */
     .rope-line { width:90%; max-width:1100px; margin: 6px auto 18px; height:24px; border-top:3px solid rgba(120,70,30,0.45); position:relative; }
     .rope-line::after { content:""; position:absolute; left:50%; top:-14px; transform:translateX(-50%); width:10px; height:10px; background:#f4b7cf; border-radius:50%; box-shadow:0 1px 0 rgba(0,0,0,0.15); }
-
-    .window-shadow {
-      pointer-events:none;
-      position:fixed; inset:0; z-index:0;
-      background: repeating-linear-gradient(
-        40deg,
-        rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 18px,
-        transparent 18px, transparent 60px
-      );
-      mix-blend-mode: multiply;
-      animation: lightMove 9s infinite alternate ease-in-out;
-      opacity:0.25;
-    }
+    .window-shadow { pointer-events:none; position:fixed; inset:0; z-index:0; background: repeating-linear-gradient( 40deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 18px, transparent 18px, transparent 60px ); mix-blend-mode: multiply; animation: lightMove 9s infinite alternate ease-in-out; opacity:0.25; }
     @keyframes lightMove { from{transform:translateX(-6px)} to{transform:translateX(6px)} }
 
     @media (min-width:768px){
@@ -126,12 +116,11 @@
       const container = document.getElementById('page-container');
 
       function playMusic(){ bgm.play().catch(()=>{}); musicBtn.style.display='none'; }
-      window.playMusic = playMusic; // ให้เรียกจากปุ่มที่ markup ใช้
+      window.playMusic = playMusic;
 
       // เพจทั้งหมด (รักษาข้อความเดิมครบถ้วน)
       const pages = [
-        {
-          bg: "url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80')",
+        { bg: null, // หน้าแรก: ไม่มีรูป background (ตามคำขอ)
           content: `
             <div class="page active">
               <div class="heart">💗</div>
@@ -143,10 +132,8 @@
               </p>
               <button onclick="nextPage()">ไปต่อ 💌</button>
             </div>
-          `
-        },
-        {
-          bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')",
+          `},
+        { bg: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')",
           content: `
             <div class="page">
               <h1>ตอนที่ 1: ตอนเราเริ่มคุยกัน ☀️</h1>
@@ -157,10 +144,8 @@
               </p>
               <button onclick="nextPage()">ต่อไป 🌸</button>
             </div>
-          `
-        },
-        {
-          bg: "url('https://images.unsplash.com/photo-1505672678657-cc7037095e2c?auto=format&fit=crop&w=1600&q=80')",
+          `},
+        { bg: "url('https://images.unsplash.com/photo-1505672678657-cc7037095e2c?auto=format&fit=crop&w=1600&q=80')",
           content: `
             <div class="page">
               <h1>ตอนที่ 2: เวลาที่ได้อยู่กับอ้วน 🍃</h1>
@@ -171,10 +156,8 @@
               </p>
               <button onclick="nextPage()">ต่อไป 💫</button>
             </div>
-          `
-        },
-        {
-          bg: "url('https://images.unsplash.com/photo-1471922694854-ff1b63b20054?auto=format&fit=crop&w=1600&q=80')",
+          `},
+        { bg: "url('https://images.unsplash.com/photo-1471922694854-ff1b63b20054?auto=format&fit=crop&w=1600&q=80')",
           content: `
             <div class="page">
               <h1>ตอนที่ 3: ขอให้อ้วนอยู่กับเค้านานๆ 🥺💕</h1>
@@ -185,10 +168,8 @@
               </p>
               <button onclick="nextPage()">ตอนสุดท้าย 💝</button>
             </div>
-          `
-        },
-        {
-          bg: "url('https://images.unsplash.com/photo-1476673160081-cf065607f449?auto=format&fit=crop&w=1600&q=80')",
+          `},
+        { bg: "url('https://images.unsplash.com/photo-1476673160081-cf065607f449?auto=format&fit=crop&w=1600&q=80')",
           content: `
             <div class="page">
               <div style="font-size:12vw; margin-bottom:12px;">💝</div>
@@ -196,66 +177,108 @@
               <p>
                 แต่เรื่องของเรายังไม่จบนะ 😚<br>
                 เค้าจะอยู่กวนใจอ้วนแบบนี้ทุกวันเลย~ 💕<br>
-                (กดหัวใจเพื่อดูรูปทั้งหมดของเรา)
+                (กดดูรูปทั้งหมดของเรา)
               </p>
               <button onclick="showGallery()" style="background:rgba(255,128,170,0.95)">กดดูรูปทั้งหมด 💗</button>
             </div>
-          `
-        }
+          `}
       ];
 
-      // initial render
-      let idx = 0;
+      // render page wrappers
       container.innerHTML = pages.map((p,i)=>`<div data-page="${i}" class="page-wrapper">${p.content}</div>`).join('');
-      document.body.style.backgroundImage = pages[0].bg;
+      // initial bg: use pages[0].bg if exists otherwise keep solid color
+      if(pages[0].bg) document.body.style.backgroundImage = pages[0].bg;
 
-      // ensure only first page active
-      const activateCurrent = ()=>{
+      // helper: activate current page by index
+      let idx = 0;
+      function activateCurrent(){
         document.querySelectorAll('#page-container .page-wrapper').forEach((w, i)=>{
           const pg = w.querySelector('.page');
           if(!pg) return;
-          if(i === idx) { pg.classList.add('active'); }
-          else pg.classList.remove('active');
+          if(i === idx) pg.classList.add('active'); else pg.classList.remove('active');
         });
-      };
+      }
       activateCurrent();
 
-      // nextPage: fade switch + change body background after short delay to allow fade
-      window.nextPage = function() {
-        if(bgm.paused) { bgm.play().catch(()=>{}); musicBtn.style.display='none'; }
-        const prev = container.querySelector(`.page-wrapper:nth-child(${idx+1}) .page`);
-        if(prev) prev.classList.remove('active');
+      // prevent double-click / fast click
+      let transitioning = false;
+      function setButtonsDisabled(state){
+        document.querySelectorAll('#page-container button').forEach(b=> b.disabled = state);
+        // also disable music button temporarily if desired
+      }
+
+      window.nextPage = function(){
+        if(transitioning) return; // ignore fast clicks
+        transitioning = true;
+        setButtonsDisabled(true);
+
+        // fade out current
+        const prevPage = document.querySelector(`#page-container .page-wrapper:nth-child(${idx+1}) .page`);
+        if(prevPage) prevPage.classList.remove('active');
+
+        // increment index safely
         idx = Math.min(idx + 1, pages.length - 1);
-        // set background of body to next bg (delay slightly for smooth)
-        setTimeout(()=>{ document.body.style.backgroundImage = pages[idx].bg; }, 80);
-        // activate the new page after tiny timeout to let CSS transition happen
-        setTimeout(()=> activateCurrent(), 80);
+
+        // change background after a small delay so fade looks smooth
+        setTimeout(()=> {
+          if(pages[idx].bg) document.body.style.backgroundImage = pages[idx].bg;
+          else document.body.style.backgroundImage = 'none';
+          // activate new page
+          activateCurrent();
+        }, 90);
+
+        // re-enable after transition duration
+        setTimeout(()=> {
+          transitioning = false;
+          setButtonsDisabled(false);
+        }, 1000);
       };
 
-      // showGallery: render gallery page (not in pages array) so other pages untouched
-      window.showGallery = function() {
+      // showGallery: separate view (will replace container content, but guard with transitioning)
+      window.showGallery = function(){
+        if(transitioning) return;
+        transitioning = true;
+        setButtonsDisabled(true);
+        // play music if paused
         if(bgm.paused) { bgm.play().catch(()=>{}); musicBtn.style.display='none'; }
-        // prepare gallery html
+
         const galleryHTML = `
           <div class="page active" style="padding-top:8vh;">
             <h1>รวมภาพของเรา 💗</h1>
-            <p>รูปทั้งหมดอยู่ในโฟลเดอร์เดียวกับเว็บ — ตั้งชื่อ photo1.jpg ถึง photo10.jpg</p>
+            <p style="max-width:900px">รูปทั้งหมดอยู่ในโฟลเดอร์เดียวกับเว็บ — ตั้งชื่อ photo1.jpg ถึง photo10.jpg</p>
             <div class="rope-line" aria-hidden="true"></div>
             <div class="gallery-wrap">
               <div class="gallery-grid">
                 ${Array.from({length:10}, (_,i)=>{
-                  // random angle between -6 and 6 deg
                   const angle = (Math.random()*12 - 6).toFixed(2) + 'deg';
                   return `<div class="gallery-item" style="--angle:${angle}"><img src="photo${i+1}.jpg" alt="photo${i+1}"></div>`;
                 }).join('')}
               </div>
             </div>
             <p style="margin-top:12px;">อบอุ่นเหมือนห้องที่มีรูปของเราแขวนอยู่ 💞</p>
+            <button onclick="reloadPages()" style="margin-top:10px;">กลับไปหน้าแรก ↺</button>
           </div>
         `;
-        // replace container content temporarily with gallery to avoid touching pages array
+        // replace container now
         container.innerHTML = galleryHTML;
+        // set gallery background (optional)
         document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80')";
+        // allow interactions after small delay
+        setTimeout(()=> { transitioning = false; setButtonsDisabled(false); }, 900);
+      };
+
+      // helper to reload original pages (after user clicks back)
+      window.reloadPages = function(){
+        if(transitioning) return;
+        transitioning = true;
+        setButtonsDisabled(true);
+        // re-render original wrappers
+        container.innerHTML = pages.map((p,i)=>`<div data-page="${i}" class="page-wrapper">${p.content}</div>`).join('');
+        // reset idx to 0 and bg to first (which is null -> no image)
+        idx = 0;
+        document.body.style.backgroundImage = pages[0].bg || 'none';
+        // tiny delay then activate
+        setTimeout(()=> { activateCurrent(); transitioning = false; setButtonsDisabled(false); }, 120);
       };
 
       // floating hearts
@@ -268,10 +291,8 @@
         document.body.appendChild(el);
         setTimeout(()=> el.remove(), 7000);
       }
-      setInterval(createFloatingHeart, 700);
+      setInterval(createFloatingHeart, 900);
 
-      // expose for debug if needed
-      window._app = { pages };
     });
   </script>
 </body>
